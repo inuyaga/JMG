@@ -1,0 +1,122 @@
+{% extends "admin-jmg/base.html" %}
+
+{% block contenido %}
+<div id="app">
+
+    {{fom_cat}}
+        <div class="collapse" id="collapseExample">
+                <div class="card">
+                        <div class="card-header">
+                            <strong class="card-title">Añadir </strong>
+                        </div>
+                        <div class="card-body">
+                            
+                                <form action="" method="post" id="Form-oducto">
+                                        {% csrf_token %}
+                                        {{ form.media }}
+                                        <div class="row">
+                                            {% for input in form %}
+                                            
+                                                {% if input.name == 'prod_categoria' %}
+
+                                                <div class="col-md-6 mb-3">
+                                                <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon">{{input.label}}</div>
+                                                            {{input}}
+                                                            <a href="#" onclick="crear_categoria('{{ csrf_token }}')" class="input-group-addon"><i class="fa fa-plus-circle"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                      {% else %}
+                                                      <div class="col-md-3 mb-3">
+                                                            {{input.label}}
+                                                            {{input}}
+                                                            <small class="form-text text-muted">{{input.help_text}}</small>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        <button type="submit" @click="NuevoProducto" class="btn btn-primary">Guardar</button>
+                                    </form>
+                        </div>
+                    </div>
+              </div>
+
+   
+
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">
+                <button class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Añadir</button>
+            </strong>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Descuento</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in list_prod %}
+                    <tr>
+                        <th scope="row">{{item.prod}}</th>
+                        <td>{{item.prod_nombre}}</td>
+                        <td>{{item.prod_descripcion}}</td>
+                        <td>{{item.prod_precio}}</td>
+                        <td>{{item.prod_descuento}}</td>
+                        <td>{{item.prod_stock}}</td>
+                        <td>{{item.prod_categoria}}</td>
+                        <td>
+                                <a class="btn btn-outline-danger" title="Eliminar" href="#" role="button"><i class="fa fa-trash-o"></i></a>
+                                <a class="btn btn-outline-secondary" title="Editar" href="{% url 'panel:producto_tienda_update' item.prod %}" role="button"><i class="fa fa-edit"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Añadir nuevo producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock contenido %}
+{% block script %}
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="{% static 'panel/js/crear_prodcto.js' %}"></script>
+
+{% endblock script %}

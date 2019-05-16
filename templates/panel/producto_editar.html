@@ -1,0 +1,26 @@
+{% extends "admin-jmg/base.html" %}
+
+{% block contenido %}
+<div class="card">
+    <div class="card-header">
+        <strong class="card-title">Añadir </strong>
+    </div>
+    <div class="card-body">
+
+        <form action="" method="post" id="Form-oducto">
+            {% csrf_token %}
+            {{ form.media }}
+            <div class="row">
+                {% for input in form %}
+                <div class="col-md-3 mb-3">
+                    {{input.label}}
+                    {{input}}
+                    <small class="form-text text-muted">{{input.help_text}}</small>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="submit" @click="NuevoProducto" class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+</div>
+{% endblock contenido %}

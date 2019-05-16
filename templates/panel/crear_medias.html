@@ -1,0 +1,76 @@
+{% extends "admin-jmg/base.html" %}
+
+{% block contenido %}
+{% load static %}
+<div id="app">
+
+
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">
+                <button type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#exampleModalCenter">Añadir</button>
+            </strong>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4" v-for="item in imgs">
+                    <div class="card mb-4 shadow-sm">
+                        <img  v-bind:src="'/media/'+item.media_img" height="180px" class="bd-placeholder-img card-img-top" alt="">
+                        <title>Placeholder</title>
+                    </img>
+                       
+                        <div class="card-body">
+                            <p class="card-text">[[item.short_name]]</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" @click="delete_img(item.id)">Eliminar</button>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Añadir nueva imagen</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post" id="Form-media" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock contenido %}
+
+{% block script %}
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="{% static 'panel/js/crear_media.js' %}"></script>
+
+{% endblock script %}
