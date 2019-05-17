@@ -76,7 +76,7 @@
                         <td>{{item.prod_stock}}</td>
                         <td>{{item.prod_categoria}}</td>
                         <td>
-                                <a class="btn btn-outline-danger" title="Eliminar" href="#" role="button"><i class="fa fa-trash-o"></i></a>
+                                <a class="btn btn-outline-danger" title="Eliminar" href="{% url 'panel:producto_tienda_delete' item.prod %}" role="button"><i class="fa fa-trash-o"></i></a>
                                 <a class="btn btn-outline-secondary" title="Editar" href="{% url 'panel:producto_tienda_update' item.prod %}" role="button"><i class="fa fa-edit"></i></a>
                         </td>
                     </tr>

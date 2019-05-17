@@ -33,7 +33,7 @@ class MediaForm(forms.ModelForm):
         self.fields['media_img'].widget.attrs.update({'@change': 'processFile($event)'})
         self.fields['short_name'].widget.attrs.update({'v-model': 'short_name'})
 
-class CategoriaForm(forms.ModelForm):
+class CategoriaForm(forms.ModelForm): 
     class Meta:
         model = Categoria
         fields = '__all__'

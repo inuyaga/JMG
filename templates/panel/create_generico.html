@@ -1,0 +1,44 @@
+{% extends "admin-jmg/base.html" %}
+{% block contenido %}
+<div class="card">
+    <div class="card-header">
+
+        <button type="button" class="btn btn-outline-success" onclick="crear_categoria()" title="Añadir"><i
+                class="fa fa-plus-circle"></i></button>
+    </div>
+    <div class="card-body">
+        <table class="table" id="tabla_categoria">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Eliminar</th>
+                    <th scope="col">Editar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in list_data %}
+                <tr>
+                    <th scope="row">{{item.cat}}</th>
+                    <td>{{item.cat_nombre}}</td>
+                    <td>
+                        <a href="{% url 'panel:cat_delete' item.cat %}"><i class="fa fa-trash-o"></i></a>
+                    </td>
+                    <td>
+                        <a href="#" onclick="Update_categoria({{item.cat}})"><i class="fa fa-edit"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endblock contenido %}
+{% block script %}
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="{% static 'panel/js/crea_categoria.js' %}"></script>
+{% endblock script %}
