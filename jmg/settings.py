@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'aplicaciones.panel',
     'ajax_select',  # <-   add the app
 ]
@@ -66,12 +67,12 @@ WSGI_APPLICATION = 'jmg.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'jmg',
-        'USER': 'externo',
-        'PASSWORD': '0102261218',
-        'HOST': '192.168.1.228',
-        'PORT': '3306',
+        'USER': 'postgres',
+        'PASSWORD': 'S1st3m45',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

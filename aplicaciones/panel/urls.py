@@ -9,9 +9,16 @@ urlpatterns = [
     path('tienda/media/', panel.MediaCreate.as_view(), name='media_files'),
     path('tienda/media/get_list', panel.GetListMedia.as_view(), name='get_media_files'),
     path('tienda/media/delete/', panel.MediaDelete.as_view(), name='get_media_delete'),
+
     path('tienda/categoria/crear/', panel.CategoriaCrear.as_view(), name='cat_crear'),
     path('tienda/categoria/create/', panel.CategiriaCreateView.as_view(), name='cat_create'),
     path('tienda/categoria/delete/<int:pk>/', panel.CategoriaDelete.as_view(), name='cat_delete'),
     path('tienda/categoria/update/', panel.CategoriaUpdate.as_view(), name='cat_update'),
+
+    path('tienda/marca/crear/', panel.MarcaCrear.as_view(), name='marca_crar'),
+
+    path('tienda/item/crear/', panel.ItemCrear.as_view(), name='item_crar'),
+
+    path('tienda/producto/especificaciones/<int:pk>/', panel.EspecificacionCrear.as_view(), name='especificacion'),
     
-]
+] 

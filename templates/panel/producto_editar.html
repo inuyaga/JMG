@@ -7,7 +7,7 @@
     </div>
     <div class="card-body">
 
-        <form action="" method="post" id="Form-oducto">
+        <form action="" method="post" id="Form-oducto" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.media }}
             <div class="row">

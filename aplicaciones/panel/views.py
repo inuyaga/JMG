@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, CreateView, View, UpdateView, DeleteView, View
-from aplicaciones.panel.models import Producto, Categoria, MediaFiles
-from aplicaciones.panel.forms import ProductoForm, MediaForm, CategoriaForm
+from aplicaciones.panel.models import Producto, Categoria, MediaFiles, Marcas, EspecificacionProducto, ItemEspecificacion
+from aplicaciones.panel.forms import ProductoForm, MediaForm, CategoriaForm, EspeficicacionForm
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from aplicaciones.index.eliminaciones import get_deleted_objects
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import IntegrityError
+from django.contrib import messages
 # Create your views here.
 # Create your views here.
 class InitPanel(TemplateView):
@@ -200,6 +202,88 @@ class CategoriaUpdate(View):
             return JsonResponse(data, status=400)
         
     
+class MarcaCrear(View):
+    def post(self, request, *args, **kwargs):
+        from django.core.exceptions import ValidationError
+        import json
+        # body_unicode = request.body.decode('utf-8')
+        body = json.loads(request.body)
+        try:
+            marca_obj=Marcas(marca_nombre=body.get('marca').title())
+            marca_obj.full_clean()
+            marca_obj.save()
+            qry_marcas=Marcas.objects.filter(marca=marca_obj.pk).values()
+            marca_list=list(qry_marcas)
+            data = {
+                    'obj_list': marca_list,
+                    'status': True,
+                }
+            return JsonResponse(data) 
+        except ValidationError as e:
+            # Do something based on the errors contained in e.message_dict.
+            # Display them to a user, or handle them programmatically.
+            
+            data = {
+                    'error': 'error',
+                    'type': dict(e), 
+                    'status': False,
+                     
+                }
+            return JsonResponse(data, status=400)
+
+class EspecificacionCrear(CreateView):
+    model = EspecificacionProducto
+    template_name = "panel/especificaciones.html"
+    form_class = EspeficicacionForm
+    success_url = reverse_lazy('panel:producto_tienda')
+    def get_success_url(self, **kwargs):         
+        return reverse_lazy('panel:especificacion', kwargs = {'pk': self.kwargs.get('pk')})
+    def form_valid(self, form):
+        form.instance.esp_producto=Producto.objects.get(prod=self.kwargs.get('pk'))
+        try:
+            return super().form_valid(form)
+        except IntegrityError:
+            form.add_error('esp_item','Existe una especificacion del mismo tipo')
+            messages.warning(self.request, 'Existe una especificacion del mismo tipo, agregue uno nuevo.')
+            return self.form_invalid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['EspecificacionProducto'] = EspecificacionProducto.objects.all()
+        context['ItemEspecificacion'] = ItemEspecificacion.objects.all()
+        
+        return context
+
+
+
+class ItemCrear(View):
+    def post(self, request, *args, **kwargs):
+        from django.core.exceptions import ValidationError
+        import json
+        # body_unicode = request.body.decode('utf-8')
+        body = json.loads(request.body)
+        try:
+            obj=ItemEspecificacion(item_nombre=body.get('item').title())
+            obj.full_clean()
+            obj.save()
+            qry=ItemEspecificacion.objects.filter(item=obj.pk).values()
+            lista=list(qry)
+            data = {
+                    'obj_list': lista,
+                    'status': True,
+                }
+            return JsonResponse(data) 
+        except ValidationError as e:
+            # Do something based on the errors contained in e.message_dict.
+            # Display them to a user, or handle them programmatically.
+            
+            data = {
+                    'error': 'error',
+                    'type': dict(e),
+                    'status': False,
+                     
+                }
+            return JsonResponse(data, status=400)
+       
 
 
 

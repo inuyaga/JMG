@@ -1,122 +1,188 @@
-{% extends "index/base.html" %}
-{% block nav %}
-   <!-- Navigation -->
-   <nav class="navbar navbar-expand-lg navbar-dark fixed-top {% if nav_dark %}navbar-shrink{% endif %}" id="mainNav">
-        <div class="container">
-          <a class="navbar-brand js-scroll-trigger" href="{% url 'index:inicio' %}">JMG Sistemas</a>
-          <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-            data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
-            aria-label="Toggle navigation">
-            Menu
-            <i class="fas fa-bars"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav text-uppercase ml-auto">
-              
-              <li class="nav-item active">
-                <a class="nav-link js-scroll-trigger" href="{% url 'index:shop' %}">JMG Shop</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-{% endblock nav %}
+{% extends 'index/base_tienda.html' %}
 {% block contenido %}
-{% load static %}
+{% load humanize %}
+  	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+            <div class="container">
+                <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                    <div class="col-first">
+                        <h1>Categorias</h1>
+                        <nav class="d-flex align-items-center">
+                            <a href="index.html">Inicio<span class="lnr lnr-arrow-right"></span></a>
+                            <a href="#">Tienda<span class="lnr lnr-arrow-right"></span></a>
+                            <a href="category.html">Buscar</a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Banner Area -->
 
-<section class="jumbotron text-center page-section">
         <div class="container">
-          <h1 class="jumbotron-heading">Album example</h1>
-          <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-          <p>
-            <a href="#" class="btn btn-primary my-2">Main call to action</a>
-            <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-          </p>
-        </div>
-      </section>
+		<div class="row">
+			<div class="col-xl-3 col-lg-4 col-md-5">
+				<div class="sidebar-categories">
+					<div class="head">Buscar por categoria</div>
+					<ul class="main-categories">
+						<!-- <li class="main-nav-list"><a data-toggle="collapse" href="#fruitsVegetable" aria-expanded="false" aria-controls="fruitsVegetable"><span
+								 class="lnr lnr-arrow-right"></span>Fruits and Vegetables<span class="number">(53)</span></a>
+							<ul class="collapse" id="fruitsVegetable" data-toggle="collapse" aria-expanded="false" aria-controls="fruitsVegetable">
+								<li class="main-nav-list child"><a href="#">Frozen Fish<span class="number">(13)</span></a></li>
+								<li class="main-nav-list child"><a href="#">Dried Fish<span class="number">(09)</span></a></li>
+								<li class="main-nav-list child"><a href="#">Fresh Fish<span class="number">(17)</span></a></li>
+								<li class="main-nav-list child"><a href="#">Meat Alternatives<span class="number">(01)</span></a></li>
+								<li class="main-nav-list child"><a href="#">Meat<span class="number">(11)</span></a></li>
+							</ul>
+						</li> -->
+                        {% for item in categira_list %}
+						<li class="main-nav-list"><a href="?cat={{item.cat}}">{{item.cat_nombre}}</a></li>
+                        {% endfor %}
+						<!-- <li class="main-nav-list"><a href="?cat={{item.cat}}">{{item.cat_nombre}}<span class="number">(24)</span></a></li> -->
+                            
+						
+						
+					</ul>
+				</div>
+				<div class="sidebar-filter mt-50">
+					<div class="top-filter-head">Filtar producto</div>
+					<div class="common-filter">
+						<div class="head">Marcas</div>
+						<form action="#">
+							<ul>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="apple" name="brand"><label for="apple">Apple<span>(29)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="asus" name="brand"><label for="asus">Asus<span>(29)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="gionee" name="brand"><label for="gionee">Gionee<span>(19)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="micromax" name="brand"><label for="micromax">Micromax<span>(19)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="samsung" name="brand"><label for="samsung">Samsung<span>(19)</span></label></li>
+							</ul>
+						</form>
+					</div>
+					<!-- <div class="common-filter">
+						<div class="head">Color</div>
+						<form action="#">
+							<ul>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="black" name="color"><label for="black">Black<span>(29)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="balckleather" name="color"><label for="balckleather">Black
+										Leather<span>(29)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="blackred" name="color"><label for="blackred">Black
+										with red<span>(19)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="gold" name="color"><label for="gold">Gold<span>(19)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="spacegrey" name="color"><label for="spacegrey">Spacegrey<span>(19)</span></label></li>
+							</ul>
+						</form>
+					</div> -->
+					<div class="common-filter">
+						<div class="head">Precio</div>
+						<div class="price-range-area">
+							<div id="price-range"></div>
+							<div class="value-wrapper d-flex">
+								<div class="price">Price:</div>
+								<span>$</span>
+								<div id="lower-value"></div>
+								<div class="to">to</div>
+								<span>$</span>
+								<div id="upper-value"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-9 col-lg-8 col-md-7">
+				<!-- Start Filter Bar -->
+				<div class="filter-bar d-flex flex-wrap align-items-center">
+					<!-- <div class="sorting">
+						<select>
+							<option value="1">Default sorting</option>
+							<option value="1">Default sorting</option>
+							<option value="1">Default sorting</option>
+						</select>
+					</div>
+					<div class="sorting mr-auto">
+						<select>
+							<option value="1">Show 12</option>
+							<option value="1">Show 12</option>
+							<option value="1">Show 12</option>
+						</select>
+					</div> -->
+					{% block pagination %}
+					{% if is_paginated %}
+					<div class="pagination">
+						{% if page_obj.has_previous %}
+						<a href="?cat={{categoria}}&page={{ page_obj.previous_page_number }}" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
+						{% endif %}
+						{% for page in page_obj.paginator.page_range %}
+								<a href="?cat={{categoria}}&page={{ page }}" class="{% if page_obj.number == page %}active{% endif %}">{{ page }}</a>
+						{% endfor %}
+						{% if page_obj.has_next %}
+						<a href="?cat={{categoria}}&page={{ page_obj.next_page_number }}" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+						{% endif %}
+					</div>
+					{% endif %}
+					{% endblock %}
+					
+					
+				</div>
+                <!-- End Filter Bar -->
+                
+                
+                
+                    
+                
+                    
+				<!-- Start Best Seller -->
+				<section class="lattest-product-area pb-40 category-list">
+					<div class="row">
+                            {% for item in object_list %}
+						<!-- single product -->
+						<div class="col-lg-4 col-md-6">
+							<div class="single-product">
+								<img class="img-fluid" src="{{item.prod_miniatura.url}}" alt="">
+								<div class="product-details">
+									<h6>{{item.prod_nombre}}</h6>
+									<div class="price">
+										<h6>${{item.prod_con_descuento|intcomma}}</h6>
+										<h6 class="l-through">${{item.prod_precio|intcomma}}</h6>
+									</div>
+									<div class="prd-bottom">
 
-
-<div class="container">
-<div class="row">
-<div class="col-md-2">
-        <div class="form-group">
-                <label for="exampleInputEmail1">Buscar</label>
-                <input type="text" class="form-control" placeholder="Buscar">
-                <small id="emailHelp" class="form-text text-muted">Nombre de producto a buscar.</small>
-              </div>
-</div>
-<div class="col-md-9">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                    xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
-                    aria-label="Placeholder: Thumbnail">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef"
-                        dy=".3em">Thumbnail</text>
-                </svg>
-                <div class="card-body">
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                        additional content. This content is a little bit longer.</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                        </div>
-                        <small class="text-muted">9 mins</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                    xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
-                    aria-label="Placeholder: Thumbnail">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef"
-                        dy=".3em">Thumbnail</text>
-                </svg>
-                <div class="card-body">
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                        additional content. This content is a little bit longer.</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                        </div>
-                        <small class="text-muted">9 mins</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                    xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
-                    aria-label="Placeholder: Thumbnail">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef"
-                        dy=".3em">Thumbnail</text>
-                </svg>
-                <div class="card-body">
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                        additional content. This content is a little bit longer.</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                        </div>
-                        <small class="text-muted">9 mins</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-      
-        
-    </div>
-</div>
-</div>
-</div>
+										<a href="" class="social-info">
+											<span class="ti-bag"></span>
+											<p class="hover-text">añadir</p>
+										</a>
+										<a href="" class="social-info">
+											<span class="lnr lnr-heart"></span>
+											<p class="hover-text">deseos</p>
+										</a>
+										<a href="" class="social-info">
+											<span class="lnr lnr-sync"></span>
+											<p class="hover-text">comparar</p>
+										</a>
+										<a href="{% url 'index:detalle' item.prod %}" class="social-info">
+											<span class="lnr lnr-move"></span>
+											<p class="hover-text">ver mas</p>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</section>
+				<!-- End Best Seller -->
+				<!-- Start Filter Bar -->
+				<div class="filter-bar d-flex flex-wrap align-items-center">
+					<div class="pagination">
+						<a href="#" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
+						<a href="#" class="active">1</a>
+						<a href="#">2</a>
+						<a href="#">3</a>
+						<a href="#" class="dot-dot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
+						<a href="#">6</a>
+						<a href="#" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+					</div>
+				</div>
+				<!-- End Filter Bar -->
+			</div>
+		</div>
+	</div>
 {% endblock contenido %}

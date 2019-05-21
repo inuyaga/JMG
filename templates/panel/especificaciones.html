@@ -1,0 +1,73 @@
+{% extends "admin-jmg/base.html" %}
+{% block contenido %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %} role="alert">
+            {{ message }}
+          </div>
+    {% endfor %}
+</ul>
+{% endif %}
+<form action="" method="POST">
+    <div class="row">
+        {% csrf_token %}
+        {% for input in form %}
+        {% if input.name == 'esp_item' %}
+        <div class="col-md-4 mb-4">
+            <div class="form-group">
+                <div class="input-group">
+                    {{input.erros}}
+                    <div class="input-group-addon">{{input.label}}</div>
+                    {{input}}
+                    <a href="#" onclick="crear_item()" class="input-group-addon"><i
+                            class="fa fa-plus-circle"></i></a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-md-4 mb-4">
+                <div class="form-group">
+                    <div class="input-group">
+                            {{input.erros}}
+                        <div class="input-group-addon">{{input.label}}</div>
+                        {{input}}
+                    </div>
+                </div>
+        </div>
+        {% endif %}
+
+
+        {% endfor %}
+        <div class="col-sm-4">
+            <button class="btn btn-primary btn-sm" type="submit">Añadir</button>
+        </div>
+    </div>
+</form>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Producto</th>
+            <th scope="col">Item</th>
+            <th scope="col">Especificacion</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in EspecificacionProducto %}    
+        <tr>
+            <th scope="row">{{item.esp_producto}}</th>
+            <td>{{item.esp_item}}</td>
+            <td>{{item.esp_especificacion}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock contenido %}
+
+{% block script %}
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="{% static 'panel/js/crear_especificacion.js' %}"></script> 
+
+{% endblock script %}

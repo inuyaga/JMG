@@ -1,0 +1,133 @@
+{% extends 'index/base_tienda.html' %}
+{% block contenido %}
+{% load humanize %}
+
+<!-- Start Banner Area -->
+<!-- <section class="banner-area organic-breadcrumb">
+            <div class="container">
+                <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                    <div class="col-first">
+                        <h1>Detalle Producto</h1>
+                        <nav class="d-flex align-items-center">
+                            <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                            <a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
+                            <a href="single-product.html">product-details</a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section> -->
+<!-- End Banner Area -->
+
+<!--================Single Product Area =================-->
+<div class="product_image_area">
+    <div class="container">
+        <div class="row s_product_inner">
+            <div class="col-lg-6">
+                <div class="main-carousel">
+                    {% for item in object.prod_fotos.all %}
+                    <div class="carousel-cell"><img src="{{item.media_img.url}}" width="500px" alt=""></div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                <div class="s_product_text">
+                    <h3>{{object.prod_nombre}}</h3>
+                    <h2>${{object.prod_precio|intcomma}}</h2>
+                    <ul class="list">
+                        <li><a class="active" href="#"><span>Categoria</span> : {{object.prod_categoria}}</a></li>
+                        <li><a href="#"><span>Disponibles</span> : {{object.prod_stock|intword}}</a></li>
+                    </ul>
+                    <p>{{object.prod_descripcion|truncatewords:10}}....</p>
+                    <div class="product_count">
+                        <label for="qty">Cantidad:</label>
+                        <input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:"
+                            class="input-text qty">
+                        <button
+                            onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+                            class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
+                        <button
+                            onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
+                            class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
+                    </div>
+                    <div class="card_area d-flex align-items-center">
+                        <a class="primary-btn" href="#">Añadir</a>
+                        <a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
+                        <a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--================End Single Product Area =================-->
+
+
+
+<!--================Product Description Area =================-->
+<section class="product_description_area">
+    <div class="container">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                    aria-selected="true">Descripcion</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                    aria-controls="profile" aria-selected="false">Especificaciones</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <p>{{object.prod_descripcion}}</p>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+
+                            {% for item in detalles_obj %}
+                            <tr>
+                                <td>
+                                    <h5>{{item.esp_item}}</h5>
+                                </td>
+                                <td>
+                                    <h5>{{item.esp_especificacion}}</h5>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+<!--================End Product Description Area =================-->
+
+
+{% endblock contenido %}
+
+{% block script %}
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+<script>
+
+
+    var elem = document.querySelector('.main-carousel');
+    var flkty = new Flickity(elem, {
+        // options
+        cellAlign: 'left',
+        contain: true,
+        freeScroll: true,
+wrapAround: true
+    });
+
+
+    
+</script>
+{% endblock script %}
