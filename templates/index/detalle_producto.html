@@ -33,7 +33,8 @@
             <div class="col-lg-5 offset-lg-1">
                 <div class="s_product_text">
                     <h3>{{object.prod_nombre}}</h3>
-                    <h2>${{object.prod_precio|intcomma}}</h2>
+                    <h2>${{object.prod_con_descuento|intcomma}}</h2>
+                    <del>Antes: ${{object.prod_precio|intcomma}}.</del>
                     <ul class="list">
                         <li><a class="active" href="#"><span>Categoria</span> : {{object.prod_categoria}}</a></li>
                         <li><a href="#"><span>Disponibles</span> : {{object.prod_stock|intword}}</a></li>

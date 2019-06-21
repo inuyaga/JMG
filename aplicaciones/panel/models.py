@@ -15,7 +15,10 @@ class Categoria(models.Model):
 
 class Marcas(models.Model):
     marca=models.AutoField(primary_key=True)
-    marca_nombre=models.CharField('Marca', max_length=80, unique=True)
+    marca_nombre=models.CharField('Marca', max_length=80, unique=True) 
+    def total_prod_marca(self):
+        total=Producto.objects.filter(prod_marca=self.marca).count()
+        return total
     def __str__(self):
         return self.marca_nombre 
 
@@ -31,9 +34,10 @@ class Producto(models.Model):
     prod_stock=models.FloatField('Cantidad de entrada a stock')
     prod_categoria=models.ForeignKey(Categoria, verbose_name='Tipo de categoria', on_delete=models.SET_NULL, blank=True, null=True)
     prod_marca=models.ForeignKey(Marcas, verbose_name='Marca', on_delete=models.CASCADE)
+    prod_fecha_creacion=models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.prod_nombre
+        return self.prod_codigo
     def prod_con_descuento(self):
         precio=self.prod_precio
         descuento=self.prod_descuento
@@ -54,7 +58,9 @@ class EspecificacionProducto(models.Model):
     esp_especificacion=models.CharField('Especificacion', max_length=50)
     esp_producto=models.ForeignKey(Producto, verbose_name='Producto', on_delete=models.CASCADE)
     def __str__(self):
-        return self.esp_producto
+        item=str(self.esp_item)
+        esp=str(self.esp_especificacion)
+        return item + ' ' +esp
     class Meta:
         unique_together = (("esp_item", "esp_producto"),)
         

@@ -23,8 +23,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 
 admin.autodiscover()
 urlpatterns = [
-    path('', include('aplicaciones.index.urls'), name='index'),
-    path('panel/', include('aplicaciones.panel.urls')),
+    path('', include('aplicaciones.index.urls'), name='index'), 
+    path('panel/', include('aplicaciones.panel.urls')), 
     path('admin/', admin.site.urls),
     re_path(r'^ajax_select/', include(ajax_select_urls)),
     path('login/',LoginView.as_view(template_name='index/inicio.html'), name='inicio'),

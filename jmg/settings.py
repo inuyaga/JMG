@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'aplicaciones.panel',
+    'aplicaciones.index',
     'ajax_select',  # <-   add the app
 ]
 
