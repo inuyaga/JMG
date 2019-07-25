@@ -18,28 +18,28 @@
             </div>
         </section>
         <!-- End Banner Area -->
-
+		
         <div class="container">
 		<div class="row">
 			<div class="col-xl-3 col-lg-4 col-md-5">
 				<div class="sidebar-categories">
 					<div class="head">Buscar por categoria</div>
 					
-					<div class="list-group">
+					<div class="list-group"> 
 							{% for item in categira_list %}
 							<a href="?cat={{item.cat}}" class="list-group-item list-group-item-action {% if categoria|striptags == item.cat|striptags %}active{% endif %}">{{item.cat_nombre}}</a>
 							{% endfor %}
 						  </div>
-				</div>
+				</div> 
 				<div class="sidebar-filter mt-50">
-					<div class="top-filter-head">Filtar producto</div>
+					<div class="top-filter-head">Marcas</div>
 					<div class="common-filter">
-						<div class="head">Marcas</div> 
-
 						<div class="list-group">
-								{% for item in marcas_list %}
-								<a href="?cat={{view.request.GET.cat}}&marca={{item.marca}}" class="list-group-item list-group-item-action {% if marca|striptags == item.marca|striptags %}active{% endif %}">{{item.marca_nombre}} ( {{view.request.GET.cat|get_marca_x_cat:item.marca}} )</a>
-								{% endfor %}
+							{% for item in marcas_list %}
+							{% if view.request.GET.cat|get_marca_x_cat:item.marca != 0 %}
+							<a href="?cat={{view.request.GET.cat}}&marca={{item.marca}}" class="list-group-item list-group-item-action {% if marca|striptags == item.marca|striptags %}active{% endif %}">{{item.marca_nombre}} ( {{view.request.GET.cat|get_marca_x_cat:item.marca}} )</a>
+							{% endif %}
+							{% endfor %}
 						</div>
 					</div>
 				
@@ -117,10 +117,10 @@
 									</div>
 									<div class="prd-bottom">
 
-										<a href="" class="social-info">
+										<!-- <a href="" class="social-info">
 											<span class="ti-bag"></span>
 											<p class="hover-text">añadir</p>
-										</a>
+										</a> -->
 										<!-- <a href="" class="social-info">
 											<span class="lnr lnr-heart"></span>
 											<p class="hover-text">deseos</p>
@@ -161,4 +161,7 @@
 			</div>
 		</div>
 	</div>
+
+
+	
 {% endblock contenido %}

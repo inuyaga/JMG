@@ -42,7 +42,7 @@
                     <p>{{object.prod_descripcion|truncatewords:10}}....</p>
                     <div class="product_count">
                         <label for="qty">Cantidad:</label>
-                        <input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:"
+                        <input type="text" name="qty" id="sst" min="1" value="1" title="Quantity:"
                             class="input-text qty">
                         <button
                             onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
@@ -52,9 +52,9 @@
                             class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
                     </div>
                     <div class="card_area d-flex align-items-center">
-                        <a class="primary-btn" href="#">Añadir</a>
-                        <a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
-                        <a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
+                        <a class="primary-btn" href="#" onclick="añadir_element()">Añadir</a>
+                        <!-- <a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
+                        <a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a> -->
                     </div>
                 </div>
             </div>
@@ -86,6 +86,7 @@
                 <div class="table-responsive">
                     <table class="table">
                         <tbody>
+                            
 
                             {% for item in detalles_obj %}
                             <tr>
@@ -125,10 +126,13 @@
         cellAlign: 'left',
         contain: true,
         freeScroll: true,
-wrapAround: true
+        wrapAround: true
     });
 
+function añadir_element() {
+    var result = document.getElementById('sst').value
+    window.location.href = `/jmg-shoping/add_compras/{{object.prod_codigo}}/${result}/?detalle={{view.kwargs.pk}}`;
+}
 
-    
 </script>
 {% endblock script %}

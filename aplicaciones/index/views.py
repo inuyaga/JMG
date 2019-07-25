@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView, DetailView
 from aplicaciones.panel.models import Producto, Categoria, EspecificacionProducto
-from django.db.models import Q
+from django.db.models import Q, F, Sum, FloatField
 from django.contrib.postgres.search import SearchVector
 from aplicaciones.panel.models import Marcas, Producto
+from django.urls import reverse_lazy
 # Create your views here.
 class IndexPage(TemplateView):
     template_name='index/base.html'
@@ -30,7 +31,7 @@ class JmgShop(TemplateView):
             
         return context
 
-class JmgShopBuscar(ListView):
+class JmgShopBuscar(ListView): 
     model=Producto
     template_name = "index/jmg_shop.html"  
     paginate_by = 50
@@ -73,4 +74,80 @@ class TiendaDetalleProducto(DetailView):
         context['categira_list'] = Categoria.objects.all()
             
         return context
-    
+
+class add_compra(TemplateView): 
+    template_name = "index/detalle_producto.html"
+    def get(self, request, *args, **kwargs):
+        codigo=kwargs.get('codigo')
+        cantidad=kwargs.get('cantidad')
+        detail=request.GET.get('detalle')
+        url=''
+        if 'compra' not in request.session:
+            request.session['compra']={codigo:cantidad}
+            request.session['compra_items']=len(request.session['compra'])
+        else:
+            request.session['compra'].update({codigo:cantidad})
+            request.session['compra_items']=len(request.session['compra'])
+        
+        
+        url=reverse_lazy('index:detalle', kwargs={'pk':detail})
+        return redirect(url)
+
+class CheckListCompra(TemplateView):
+    template_name = "index/check_list.html"
+    def get_context_data(self, **kwargs):
+        from django.contrib.humanize.templatetags.humanize import intcomma as intcomma_django
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        # context['detalles_obj'] = EspecificacionProducto.objects.filter(esp_producto=self.kwargs.get('pk'))
+        tab=""
+        
+        try:
+            codigos_prod=self.request.session.get('compra').keys()
+            codigos_prod_all=self.request.session.get('compra')
+            productos_list=Producto.objects.filter(prod_codigo__in=codigos_prod).annotate(descuento=Sum(F('prod_precio') * F('prod_descuento')/100, output_field=FloatField()))
+            print(productos_list)
+            total=0
+            for item in productos_list:
+                subtotal = round(codigos_prod_all[item.prod_codigo] * item.prod_precio-(codigos_prod_all[item.prod_codigo]*item.descuento), 3)
+                total += subtotal
+                tem = """
+                <tr>
+                    <td>
+                        <div class="media">
+                            <div class="d-flex">
+                                <img src="{imagen}" alt="" width="80px" height="80px">
+                            </div>
+                            <div class="media-body">
+                                <p>{nombre}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <h5>${precio}</h5>
+                    </td>
+                    <td>
+                    
+                    <div class="form-group col-md-4">
+                                <input type="number" value="{cantidad}" min="1" class="form-control" name="" id="">
+                        </div>
+                        
+                    </td>
+                    <td>
+                        <h5>${total}</h5>
+                    </td>
+                </tr>
+                """.format(imagen=str(item.prod_miniatura.url),nombre=item.prod_nombre,precio=intcomma_django( round(item.prod_precio-item.descuento, 3)),cantidad=str(codigos_prod_all[item.prod_codigo]),total=intcomma_django(subtotal))
+                
+                
+                tab += tem
+            context['tabla']=tab           
+            context['total']=intcomma_django(total)
+        except Exception as err:
+            print(err)
+                   
+            
+        return context
+
+        

@@ -7,4 +7,6 @@ urlpatterns = [
     path('jmg-shoping/', index.JmgShop.as_view(), name='shop'), 
     path('jmg-shoping/buscar/', index.JmgShopBuscar.as_view(), name='busqueda'),
     path('jmg-shoping/detalles/<int:pk>/', index.TiendaDetalleProducto.as_view(), name='detalle'),
+    path('jmg-shoping/add_compras/<slug:codigo>/<int:cantidad>/', index.add_compra.as_view(), name='add_compra'),
+    path('jmg-shoping/check/list/', index.CheckListCompra.as_view(), name='check_compra'),
 ]

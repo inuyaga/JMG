@@ -38,7 +38,7 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.prod_codigo
-    def prod_con_descuento(self):
+    def prod_con_descuento(self): 
         precio=self.prod_precio
         descuento=self.prod_descuento
         resultado_descuento=descuento/100
